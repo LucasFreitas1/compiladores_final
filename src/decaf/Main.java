@@ -40,6 +40,9 @@ class Main {
 							case DecafLexer.STRING:
 								type = " STRINGLITERAL";
 								break;
+							case DecafLexer.INT:
+								type = " INTLITERAL";
+								break;
 		        			}
 		        			System.out.println (token.getLine() + type + " " + text);
 		        		}
