@@ -43,7 +43,10 @@ class Main {
 							case DecafLexer.INT:
 								type = " INTLITERAL";
 								break;
-		        			}
+							case DecafLexer.OP:
+								type = " OPERADORES";
+								break;
+							}
 		        			System.out.println (token.getLine() + type + " " + text);
 		        		}
 		        		done = true;
