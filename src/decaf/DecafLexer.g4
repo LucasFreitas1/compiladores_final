@@ -24,8 +24,11 @@ WS_ : (' ' | '\n' ) -> skip;
 
 SL_COMMENT : '//' (~'\n')* '\n' -> skip;
 
-CHAR : '\'' (ESC|[\u0020-\u007E]) '\'';
-STRING : '"' (ESC|~'"')* '"';
+CHAR : '\'' (ESC| CHARCOMPLEMENTO ) '\'';
+STRING : '"' (ESC|CHARCOMPLEMENTO)* '"';
 
 fragment
-ESC :  '\\' ('n'|'"');
+ESC :  '\\' ( 'r' | 'n' | 't' | '\'' | '"' | '\\') ;
+
+fragment
+CHARCOMPLEMENTO: [\u0020-\u0021|\u0023-\u0026|\u0028-\u005B|\u005D-\u007E];
