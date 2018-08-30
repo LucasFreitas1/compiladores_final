@@ -14,6 +14,18 @@ tokens
   TK_class
 }
 
+PROGRAM: 'Program' ;
+CLASS: 'class' ;
+TYPE : 'boolean' | 'int' ;
+CALLOUT: 'callout' ;
+IF: 'if' ;
+ELSE: 'else' ;
+FOR: 'for' ;
+VOID: 'void' ;
+RETURN: 'return' ;
+BREAK: 'break' ;
+CONTINUE: 'continue' ;
+
 LCURLY : '{';
 RCURLY : '}';
 
@@ -29,6 +41,7 @@ STRING : '"' (ESC| ASCII )* '"';
 INT: DECIMAL;
 OP: ('+'|'-'|'*'|'/'|'<'|'>'|'<='|'>='|'!='|'&&');
 
+
 fragment
 ESC :  '\\' ( 'r' | 'n' | 't' | '\'' | '"' | '\\') ;
 
@@ -37,4 +50,6 @@ ASCII: [\u0020-\u0021|\u0023-\u0026|\u0028-\u005B|\u005D-\u007E];
 
 fragment
 DECIMAL: '-'?[0-9]+;
+
+
 

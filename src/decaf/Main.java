@@ -46,6 +46,19 @@ class Main {
 							case DecafLexer.OP:
 								type = " OPERADORES";
 								break;
+							case DecafLexer.PROGRAM:
+							case DecafLexer.CLASS:
+							case DecafLexer.TYPE:
+							case DecafLexer.CALLOUT:
+							case DecafLexer.IF:
+							case DecafLexer.ELSE:
+							case DecafLexer.FOR:
+							case DecafLexer.VOID:
+							case DecafLexer.RETURN:
+							case DecafLexer.BREAK:
+							case DecafLexer.CONTINUE:
+								type = "";
+								break;
 							}
 		        			System.out.println (token.getLine() + type + " " + text);
 		        		}
