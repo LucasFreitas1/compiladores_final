@@ -50,11 +50,11 @@ class Main {
 							case DecafLexer.STRING:
 								type = " STRINGLITERAL";
 								break;
-							case DecafLexer.INT:
+							case DecafLexer.INTLITERAL:
 								type = " INTLITERAL";
 								break;
-							case DecafLexer.OP:
-								type = " OPERADORES";
+							case DecafLexer.HEXERROR:
+								type = " HEXERROR";
 								break;
 							case DecafLexer.PROGRAM:
 							case DecafLexer.CLASS:
@@ -67,6 +67,24 @@ class Main {
 							case DecafLexer.RETURN:
 							case DecafLexer.BREAK:
 							case DecafLexer.CONTINUE:
+								type = "";
+								break;
+							case DecafLexer.BOOLEANLITERAL:
+								type = " BOOLEANLITERAL";	
+								break;
+							case DecafLexer.BINARYOP:
+							case DecafLexer.UNARY:
+							case DecafLexer.NEG:
+							case DecafLexer.EQUAL:
+							case DecafLexer.ASSIGNOP:
+							case DecafLexer.RCURLY:
+							case DecafLexer.LCURLY:
+							case DecafLexer.RSQUARE:
+							case DecafLexer.LSQUARE:
+							case DecafLexer.LPARENT:
+							case DecafLexer.RPARENT:
+							case DecafLexer.COMMA:
+							case DecafLexer.SEMICOLON:
 								type = "";
 								break;
 							}

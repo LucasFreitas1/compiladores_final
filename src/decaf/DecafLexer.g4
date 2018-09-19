@@ -14,6 +14,8 @@ tokens
   TK_class
 }
 
+WS_ : (' ' | '\n' | '\r'| '\t') -> skip;
+
 PROGRAM: 'Program' ;
 CLASS: 'class' ;
 TYPE : 'boolean' | 'int' ;
@@ -25,31 +27,46 @@ VOID: 'void' ;
 RETURN: 'return' ;
 BREAK: 'break' ;
 CONTINUE: 'continue' ;
+BOOLEANLITERAL: 'true' | 'false';
 
 LCURLY : '{';
 RCURLY : '}';
+LSQUARE   : '[' ;
+RSQUARE   : ']' ;
+LPARENT   : '(' ; 
+RPARENT   : ')' ;
+COMMA     : ',' ;
+SEMICOLON : ';';
 
-ID  :
-  ('_'|'a'..'z' | 'A'..'Z') ('_'|[0-9]|'a'..'z' | 'A'..'Z')*;
 
-WS_ : (' ' | '\n' ) -> skip;
 
-SL_COMMENT : '//' (~'\n')* '\n' -> skip;
+NEG : '!';
+EQUAL : '='; 
+ASSIGNOP : '+=' | '-=' | '*=' | '/=';
+UNARY : '-';
+BINARYOP : '+' | '*' | '/' | '%' | '<' | '>' | '>=' | '<=' | '!=' | '==' | '&&' | '||';
+
+ID  :  ('_'| LETRA ) ('_'|DIGITO|LETRA)*;
+fragment LETRA: ('a'..'z' | 'A'..'Z');
+
+
+COMENTARIO : '//' (~'\n')* '\n' -> skip;
+
+
+
+INTLITERAL : HEXLITERAL | DECLITERAL ;
+fragment HEXLITERAL : '0x'(DIGITO | 'a'..'f' | 'A'..'F')+ ;
+fragment DECLITERAL: DIGITO+;
+fragment DIGITO: ('0'..'9');
+
+HEXERROR: '0x';
+
 
 CHAR : '\'' (ESC| ASCII ) '\'';
 STRING : '"' (ESC| ASCII )* '"';
-INT: DECIMAL;
-OP: ('+'|'-'|'*'|'/'|'<'|'>'|'<='|'>='|'!='|'&&'|','|';'|'['|']'|'='|'||'|'{'|'}'|'=='|'('|')');
 
-
-fragment
-ESC :  '\\' ( 'r' | 'n' | 't' | '\'' | '"' | '\\') ;
-
-fragment
-ASCII: [\u0020-\u0021|\u0023-\u0026|\u0028-\u005B|\u005D-\u007E];
-
-fragment
-DECIMAL: '-'?[0-9]+;
+fragment ESC :  '\\' ( 'r' | 'n' | 't' | '\'' | '"' | '\\') ;
+fragment ASCII: [\u0020-\u0021|\u0023-\u0026|\u0028-\u005B|\u005D-\u007E];
 
 
 
