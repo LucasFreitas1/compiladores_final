@@ -35,8 +35,8 @@ LSQUARE   : '[' ;
 RSQUARE   : ']' ;
 LPARENT   : '(' ; 
 RPARENT   : ')' ;
-COMMA     : ',' ;
-SEMICOLON : ';';
+VIRGULA     : ',' ;
+PONTOVIRGULA : ';';
 
 
 
@@ -54,7 +54,7 @@ COMENTARIO : '//' (~'\n')* '\n' -> skip;
 
 
 
-INTLITERAL : HEXLITERAL | DECLITERAL ;
+INTLITERAL : HEXLITERAL | DECLITERAL;
 fragment HEXLITERAL : '0x'(DIGITO | 'a'..'f' | 'A'..'F')+ ;
 fragment DECLITERAL: DIGITO+;
 fragment DIGITO: ('0'..'9');
