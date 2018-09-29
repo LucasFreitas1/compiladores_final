@@ -10,18 +10,15 @@ options
   tokenVocab=DecafLexer;
 }
 
-program: CLASS PROGRAM program2 EOF;
-program2: LCURLY field_decl* method_decl* RCURLY;
+program: CLASS PROGRAM LCURLY field_decl* method_decl* RCURLY;
+field_decl: (TYPE ID(VIRGULA TYPE ID)* | TYPE ID LSQUARE INTLITERAL RSQUARE (VIRGULA TYPE ID LSQUARE INTLITERAL RSQUARE)*) PONTOVIRGULA ;
 
-field_decl: field_decl_arg (field_decl_arg (VIRGULA field_decl_arg)*)? PONTOVIRGULA;
-field_decl_arg: TYPE ID | TYPE ID LSQUARE INTLITERAL RSQUARE;
+method_decl: (TYPE | VOID) ID LPARENT (TYPE ID (VIRGULA TYPE ID)*)? RPARENT block;
 
-method_decl: (TYPE | VOID) ID LPARENT method_decl_arg? RPARENT block;
-method_decl_arg: TYPE ID (VIRGULA method_decl_arg)*;
 
 block: LCURLY var_decl* statement* RCURLY;
 
-var_decl: TYPE ID (VIRGULA TYPE ID)* PONTOVIRGULA;
+var_decl: TYPE ID (VIRGULA ID)* PONTOVIRGULA;
 
 statement:
 location assign_op expr PONTOVIRGULA 
@@ -31,14 +28,16 @@ location assign_op expr PONTOVIRGULA
 | RETURN expr? PONTOVIRGULA
 | BREAK PONTOVIRGULA
 | CONTINUE PONTOVIRGULA
-| block ;
+| block;
 
 assign_op: EQUAL | ASSIGNOP;
 
 method_call:
 method_name LPARENT (expr (VIRGULA expr)*)? RPARENT
-| CALLOUT LPARENT STRING (VIRGULA (callout_arg VIRGULA)*)? RPARENT;
+| CALLOUT LPARENT STRING (VIRGULA callout_arg(VIRGULA callout_arg)*)? RPARENT;
 
+callout_arg:
+expr|STRING;
 
 method_name: ID;
 
@@ -47,11 +46,12 @@ location: ID | ID LSQUARE expr RSQUARE;
 expr:
 location
 | method_call
-| ( INTLITERAL | BOOLEANLITERAL) 
-| expr BINARYOP expr
-| UNARY expr
+| literal
+| expr (BINARYOP|UNARY) expr
 | NEG expr
-| LPARENT expr RPARENT;
+| LPARENT expr RPARENT
+|UNARY?;
 
-callout_arg:
-expr | STRING;
+
+
+literal:BOOLEANLITERAL|INTLITERAL|CHAR;

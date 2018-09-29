@@ -19,7 +19,7 @@ WS_ : (' ' | '\n' | '\r'| '\t') -> skip;
 PROGRAM: 'Program' ;
 CLASS: 'class' ;
 TYPE : 'boolean' | 'int' ;
-CALLOUT: 'callout' ;
+CALLOUT: 'callout';
 IF: 'if' ;
 ELSE: 'else' ;
 FOR: 'for' ;
@@ -42,7 +42,7 @@ PONTOVIRGULA : ';';
 
 NEG : '!';
 EQUAL : '='; 
-ASSIGNOP : '+=' | '-=' | '*=' | '/=';
+ASSIGNOP : '+=' | '-=';
 UNARY : '-';
 BINARYOP : '+' | '*' | '/' | '%' | '<' | '>' | '>=' | '<=' | '!=' | '==' | '&&' | '||';
 
