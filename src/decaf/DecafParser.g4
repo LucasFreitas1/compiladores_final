@@ -50,7 +50,7 @@ location
 | expr (BINARYOP|UNARY) expr
 | NEG expr
 | LPARENT expr RPARENT
-|UNARY?;
+|UNARY expr;
 
 
 
