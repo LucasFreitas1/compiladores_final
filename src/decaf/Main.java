@@ -83,8 +83,8 @@ class Main {
 							case DecafLexer.LSQUARE:
 							case DecafLexer.LPARENT:
 							case DecafLexer.RPARENT:
-							case DecafLexer.COMMA:
-							case DecafLexer.SEMICOLON:
+							case DecafLexer.VIRGULA:
+							case DecafLexer.PONTOVIRGULA:
 								type = "";
 								break;
 							}
