@@ -5,6 +5,7 @@ import java.io.*;
 import java.util.Arrays;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.ANTLRInputStream;
@@ -157,11 +158,15 @@ class Main {
 					//show AST in GUI
 					JFrame frame = new JFrame("Antlr AST");
 					JPanel panel = new JPanel();
+                    JScrollPane scrollPane = new JScrollPane(panel);
+                    scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+                    scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+                    scrollPane.setBounds(50, 30, 300, 50);
 					TreeViewer viewr = new TreeViewer(Arrays.asList(
 							parser.getRuleNames()),tree);
 					viewr.setScale(1.5);//scale a little
 					panel.add(viewr);
-					frame.add(panel);
+					frame.add(scrollPane);
 					frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 					frame.setSize(600,400);
 					frame.setVisible(true);
@@ -191,14 +196,18 @@ class Main {
 					//show AST in console
 					System.out.println(tree.toStringTree(parser));
 
-					//show AST in GUI
+					 //show AST in GUI
 					JFrame frame = new JFrame("Antlr AST");
 					JPanel panel = new JPanel();
+                    JScrollPane scrollPane = new JScrollPane(panel);
+                    scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+                    scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+                    scrollPane.setBounds(50, 30, 300, 50);
 					TreeViewer viewr = new TreeViewer(Arrays.asList(
 							parser.getRuleNames()),tree);
 					viewr.setScale(1.5);//scale a little
 					panel.add(viewr);
-					frame.add(panel);
+					frame.add(scrollPane);
 					frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 					frame.setSize(600,400);
 					frame.setVisible(true);
