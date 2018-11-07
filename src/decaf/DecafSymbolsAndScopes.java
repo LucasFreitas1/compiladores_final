@@ -79,7 +79,7 @@ public class DecafSymbolsAndScopes extends DecafParserBaseListener {
             this.error(ctx.ID().getSymbol(), name+" is not a variable");
         }
     }
-
+    
     void defineVar(DecafParser.TypeContext typeCtx, Token nameToken) {
         int typeTokenType = typeCtx.start.getType();
         VariableSymbol var = new VariableSymbol(nameToken.getText());
