@@ -151,8 +151,10 @@ public class DecafSymbolsAndScopes extends DecafParserBaseListener {
      */
     public static DecafSymbol.Type getType(int tokenType) {
         switch ( tokenType ) {
-            case DecafParser.VOID :  return DecafSymbol.Type.tVOID;
-            case DecafParser.INTLITERAL :   return DecafSymbol.Type.tINT;
+            case DecafParser.INT :  
+                return DecafSymbol.Type.tINT;
+            case DecafParser.VOID :
+               return DecafSymbol.Type.tVOID;
         }
         return DecafSymbol.Type.tINVALID;
     }
