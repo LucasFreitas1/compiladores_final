@@ -18,7 +18,8 @@ WS_ : (' ' | '\n' | '\r'| '\t') -> skip;
 
 PROGRAM: 'Program' ;
 CLASS: 'class' ;
-TYPE : 'boolean' | 'int' ;
+BOOLEAN: 'boolean';
+INT: 'int';
 CALLOUT: 'callout';
 IF: 'if' ;
 ELSE: 'else' ;
@@ -31,10 +32,13 @@ BOOLEANLITERAL: 'true' | 'false';
 
 LCURLY : '{';
 RCURLY : '}';
+
 LSQUARE   : '[' ;
 RSQUARE   : ']' ;
+
 LPARENT   : '(' ; 
 RPARENT   : ')' ;
+
 VIRGULA     : ',' ;
 PONTOVIRGULA : ';';
 
@@ -42,9 +46,13 @@ PONTOVIRGULA : ';';
 
 NEG : '!';
 EQUAL : '='; 
-ASSIGNOP : '+=' | '-=';
-UNARY : '-';
-BINARYOP : '+' | '*' | '/' | '%' | '<' | '>' | '>=' | '<=' | '!=' | '==' | '&&' | '||';
+ASSIGNOPMAIS : '+=';
+ASSIGNOPMENOS: '-=';
+MENOS : '-';
+OPCALC : '+' | '-' | '*' | '/' | '%';
+OPCOMP : '>' | '<' | '<=' | '>=';
+OPEQUI: '!=' | '==' ;
+OPCOND: '&&' | '||';
 
 ID  :  ('_'| LETRA ) ('_'|DIGITO|LETRA)*;
 fragment LETRA: ('a'..'z' | 'A'..'Z');
@@ -54,10 +62,10 @@ COMENTARIO : '//' (~'\n')* '\n' -> skip;
 
 
 
-INTLITERAL : HEXLITERAL | DECLITERAL;
-fragment HEXLITERAL : '0x'(DIGITO | 'a'..'f' | 'A'..'F')+ ;
-fragment DECLITERAL: DIGITO+;
-fragment DIGITO: ('0'..'9');
+
+HEXLITERAL : '0x'(DIGITO | 'a'..'f' | 'A'..'F')+ ;
+DECLITERAL: DIGITO+;
+DIGITO: ('0'..'9');
 
 HEXERROR: '0x';
 

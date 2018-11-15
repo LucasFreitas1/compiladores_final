@@ -51,6 +51,24 @@ public class DecafSymbolsAndScopes extends DecafParserBaseListener {
         popScope();
     }
 
+
+    // @Override 
+    // public void enterField_decl(DecafParser.Field_declContext ctx) { 
+    //     defineVar(ctx.type(), ctx.ID().getSymbol());
+    // }
+	
+    // @Override 
+    // public void exitField_decl(DecafParser.Field_declContext ctx) { 
+    //     String name = ctx.ID().getSymbol().getText();
+    //     Symbol var = currentScope.resolve(name);
+    //     if ( var==null ) {
+    //         this.error(ctx.ID().getSymbol(), "no such variable: "+name);
+    //     }
+    //     if ( var instanceof FunctionSymbol ) {
+    //         this.error(ctx.ID().getSymbol(), name+" is not a variable");
+    //     }
+    // }
+
     @Override
     public void enterBlock(DecafParser.BlockContext ctx) {
         LocalScope l = new LocalScope(currentScope);
@@ -113,7 +131,7 @@ public class DecafSymbolsAndScopes extends DecafParserBaseListener {
     }
 
     /**
-     * Muda para o contexto superior e atualia o escopo
+     * Muda para o contexto superior e atualia  o escopo
      */
     private void popScope() {
         System.out.println("leaving: "+currentScope.getName()+":"+currentScope);

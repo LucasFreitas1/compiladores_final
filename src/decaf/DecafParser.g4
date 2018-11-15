@@ -9,60 +9,58 @@ options
   language=Java;
   tokenVocab=DecafLexer;
 }
-decl: type ID;
-program: CLASS PROGRAM LCURLY field_decl* method_decl* RCURLY;
-field_decl: (TYPE ID(VIRGULA decl)* | TYPE ID LSQUARE INTLITERAL RSQUARE (VIRGULA decl LSQUARE INTLITERAL RSQUARE)*) PONTOVIRGULA ;
+
+program: CLASS PROGRAM LCURLY (field_decl)* (method_decl)* RCURLY;
+
+field_decl: (decl| decl LSQUARE (int_literal)+ RSQUARE (VIRGULA (decl LSQUARE int_literal RSQUARE | decl))*) PONTOVIRGULA ;
+method_decl: (type | VOID) ID LPARENT (decl (VIRGULA decl)*)* RPARENT block;
 
 
-method_decl: (TYPE | VOID) ID LPARENT (decl (VIRGULA decl)*)? RPARENT block;
-
-
-block: LCURLY var_decl* statement* RCURLY;
+block: LCURLY (var_decl)* (statement)* RCURLY;
 
 var_decl: decl (VIRGULA ID)* PONTOVIRGULA;
 
 statement:
-location assign_op expr PONTOVIRGULA 
+(location assign_op expr PONTOVIRGULA 
 | method_call PONTOVIRGULA
-| IF LPARENT expr RPARENT block (ELSE block)?
+| IF expr block (ELSE block)*
 | FOR ID EQUAL expr VIRGULA expr block 
-| RETURN expr? PONTOVIRGULA
+| return_coisa PONTOVIRGULA
 | BREAK PONTOVIRGULA
-| CONTINUE PONTOVIRGULA
-| block;
+| block
+);
 
-assign_op: EQUAL | ASSIGNOP;
+assign_op: EQUAL | ASSIGNOPMAIS | ASSIGNOPMENOS;
 
 method_call:
-method_name LPARENT (expr (VIRGULA expr)*)? RPARENT
-| CALLOUT LPARENT STRING (VIRGULA callout_arg(VIRGULA callout_arg)*)? RPARENT;
-
-callout_arg:
-expr|string_literal;
+(method_name LPARENT (expr (VIRGULA expr)*)* RPARENT
+| CALLOUT LPARENT STRING (VIRGULA callout_arg (VIRGULA callout_arg)*)* RPARENT);
 
 method_name: ID;
-type: TYPE;
-location: ID | ID LSQUARE expr RSQUARE;
+
+location: (ID | ID LSQUARE expr RSQUARE);
 
 expr:
-location
+location (expr)*
 | method_call
 | literal
-| expr (BINARYOP|UNARY) expr
+| expr operadores expr
+| MENOS expr
 | NEG expr
-| LPARENT expr RPARENT
-|UNARY expr;
+| LPARENT expr RPARENT;
 
 
+decl: type ID;
+type: (BOOLEAN | INT);
 
-literal:int_literal | char_literal | bool_literal;
 
-int_literal: decimal_literal;
+callout_arg: (expr|STRING);
 
-decimal_literal: INTLITERAL;
+return_coisa: RETURN(expr)*;
+operadores: (OPCALC | OPCOMP | OPEQUI | OPCOND);
 
 bool_literal: BOOLEANLITERAL;
-
 char_literal: CHAR;
+int_literal: (DECLITERAL | HEXLITERAL);
 
-string_literal: STRING;
+literal:int_literal | char_literal | bool_literal;
