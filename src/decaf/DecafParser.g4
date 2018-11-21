@@ -10,57 +10,64 @@ options
   tokenVocab=DecafLexer;
 }
 
-program: CLASS PROGRAM LCURLY (field_decl)* (method_decl)* RCURLY;
 
-field_decl: (decl| decl LSQUARE (int_literal)+ RSQUARE (VIRGULA (decl LSQUARE int_literal RSQUARE | decl))*) PONTOVIRGULA ;
-method_decl: (type | VOID) ID LPARENT (decl (VIRGULA decl)*)* RPARENT block;
+decl: type ID;
+program: CLASS PROGRAM LCURLY field_decl* method_decl* RCURLY;
+field_decl: (type ID(VIRGULA decl)* | 
+type ID LSQUARE int_literal RSQUARE (VIRGULA decl LSQUARE int_literal RSQUARE)*) PONTOVIRGULA ;
 
 
-block: LCURLY (var_decl)* (statement)* RCURLY;
+method_decl: (type | VOID) ID LPARENT (decl (VIRGULA decl)*)? RPARENT block;
 
-var_decl: decl (VIRGULA ID)* PONTOVIRGULA;
 
+block: LCURLY var_decl* statement* RCURLY;
+
+var_decl: type ID (variavel)* PONTOVIRGULA;
+
+variavel: VIRGULA ID;
 statement:
-(location assign_op expr PONTOVIRGULA 
+location assign_op expr PONTOVIRGULA 
 | method_call PONTOVIRGULA
-| IF expr block (ELSE block)*
+| IF LPARENT expr RPARENT block (ELSE block)?
 | FOR ID EQUAL expr VIRGULA expr block 
-| return_coisa PONTOVIRGULA
+| RETURN expr? PONTOVIRGULA
 | BREAK PONTOVIRGULA
-| block
-);
+| CONTINUE PONTOVIRGULA
+| block;
 
-assign_op: EQUAL | ASSIGNOPMAIS | ASSIGNOPMENOS;
+assign_op: EQUAL | ASSIGNOP;
 
 method_call:
-(method_name LPARENT (expr (VIRGULA expr)*)* RPARENT
-| CALLOUT LPARENT STRING (VIRGULA callout_arg (VIRGULA callout_arg)*)* RPARENT);
+method_name LPARENT (expr (VIRGULA expr)*)? RPARENT
+| CALLOUT LPARENT STRING (VIRGULA callout_arg(VIRGULA callout_arg)*)? RPARENT;
+
+callout_arg:
+expr|string_literal;
 
 method_name: ID;
 
-location: (ID | ID LSQUARE expr RSQUARE);
+location: ID | ID LSQUARE expr RSQUARE;
 
 expr:
-location (expr)*
+location
 | method_call
 | literal
-| expr operadores expr
-| MENOS expr
+| expr (BINARYOP|UNARY) expr
 | NEG expr
-| LPARENT expr RPARENT;
+| LPARENT expr RPARENT
+|UNARY expr;
 
 
-decl: type ID;
-type: (BOOLEAN | INT);
-
-
-callout_arg: (expr|STRING);
-
-return_coisa: RETURN(expr)*;
-operadores: (OPCALC | OPCOMP | OPEQUI | OPCOND);
-
-bool_literal: BOOLEANLITERAL;
-char_literal: CHAR;
-int_literal: (DECLITERAL | HEXLITERAL);
+type: TYPE;
 
 literal:int_literal | char_literal | bool_literal;
+
+int_literal: decimal_literal;
+
+decimal_literal: INTLITERAL;
+
+bool_literal: BOOLEANLITERAL;
+
+char_literal: CHAR;
+
+string_literal: STRING;

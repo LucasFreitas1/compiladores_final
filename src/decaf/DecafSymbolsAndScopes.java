@@ -40,34 +40,16 @@ public class DecafSymbolsAndScopes extends DecafParserBaseListener {
         // push new scope by making new one that points to enclosing scope
         FunctionSymbol function = new FunctionSymbol(name);
         //function.setType(type); // Set symbol type
-
         currentScope.define(function); // Define function in current scope
         saveScope(ctx, function);
         pushScope(function);
+    
     }
 
     @Override
     public void exitMethod_decl(DecafParser.Method_declContext ctx) {
         popScope();
     }
-
-
-    // @Override 
-    // public void enterField_decl(DecafParser.Field_declContext ctx) { 
-    //     defineVar(ctx.type(), ctx.ID().getSymbol());
-    // }
-	
-    // @Override 
-    // public void exitField_decl(DecafParser.Field_declContext ctx) { 
-    //     String name = ctx.ID().getSymbol().getText();
-    //     Symbol var = currentScope.resolve(name);
-    //     if ( var==null ) {
-    //         this.error(ctx.ID().getSymbol(), "no such variable: "+name);
-    //     }
-    //     if ( var instanceof FunctionSymbol ) {
-    //         this.error(ctx.ID().getSymbol(), name+" is not a variable");
-    //     }
-    // }
 
     @Override
     public void enterBlock(DecafParser.BlockContext ctx) {
@@ -79,6 +61,44 @@ public class DecafSymbolsAndScopes extends DecafParserBaseListener {
     @Override
     public void exitBlock(DecafParser.BlockContext ctx) {
         popScope();
+    }
+
+
+    @Override
+    public void enterField_decl(DecafParser.Field_declContext ctx) {
+        defineVar(ctx.ID().getSymbol());
+    }
+
+    @Override
+    public void exitField_decl(DecafParser.Field_declContext ctx) { 
+        String name = ctx.ID().getSymbol().getText();
+        Symbol var = currentScope.resolve(name);
+        if ( var==null ) {
+            this.error(ctx.ID().getSymbol(), "no such variable: "+name);
+        }
+        if ( var instanceof FunctionSymbol ) {
+            this.error(ctx.ID().getSymbol(), name+" is not a variable");
+        }
+    }
+
+    void defineVar(DecafParser.TypeContext typeCtx, Token nameToken) {
+        int typeTokenType = typeCtx.start.getType();
+        VariableSymbol var = new VariableSymbol(nameToken.getText());
+
+        // DecafSymbol.Type type = this.getType(typeTokenType);
+        // var.setType(type);
+
+        currentScope.define(var); // Define symbol in current scope
+    }
+   
+    void defineVar(Token nameToken) {
+        //int typeTokenType = typeCtx.start.getType();
+        VariableSymbol var = new VariableSymbol(nameToken.getText());
+
+        // DecafSymbol.Type type = this.getType(typeTokenType);
+        // var.setType(type);
+
+        currentScope.define(var); // Define symbol in current scope
     }
 
     @Override
@@ -97,19 +117,40 @@ public class DecafSymbolsAndScopes extends DecafParserBaseListener {
             this.error(ctx.ID().getSymbol(), name+" is not a variable");
         }
     }
-    
-    void defineVar(DecafParser.TypeContext typeCtx, Token nameToken) {
-        int typeTokenType = typeCtx.start.getType();
-        VariableSymbol var = new VariableSymbol(nameToken.getText());
 
-        // DecafSymbol.Type type = this.getType(typeTokenType);
-        // var.setType(type);
 
-        currentScope.define(var); // Define symbol in current scope
+    @Override
+    public void enterVar_decl(DecafParser.Var_declContext ctx) {
+        defineVar(ctx.type(), ctx.ID().getSymbol());
     }
 
-  
-
+    @Override
+    public void exitVar_decl(DecafParser.Var_declContext ctx) {
+        String name = ctx.ID().getSymbol().getText();
+        Symbol var = currentScope.resolve(name);
+        if ( var==null ) {
+            this.error(ctx.ID().getSymbol(), "no such variable: "+name);
+        }
+        if ( var instanceof FunctionSymbol ) {
+            this.error(ctx.ID().getSymbol(), name+" is not a variable");
+        }
+    }
+   
+    @Override public void enterVariavel(DecafParser.VariavelContext ctx) { 
+        defineVar(ctx.ID().getSymbol());
+    }
+	
+    @Override
+    public void exitVariavel(DecafParser.VariavelContext ctx) {
+        String name = ctx.ID().getSymbol().getText();
+        Symbol var = currentScope.resolve(name);
+        if ( var==null ) {
+            this.error(ctx.ID().getSymbol(), "no such variable: "+name);
+        }
+        if ( var instanceof FunctionSymbol ) {
+            this.error(ctx.ID().getSymbol(), name+" is not a variable");
+        }
+    }
     /**
      * Método que atuliza o escopo para o atual e imprime o valor
      *
@@ -131,7 +172,7 @@ public class DecafSymbolsAndScopes extends DecafParserBaseListener {
     }
 
     /**
-     * Muda para o contexto superior e atualia  o escopo
+     * Muda para o contexto superior e atualia o escopo
      */
     private void popScope() {
         System.out.println("leaving: "+currentScope.getName()+":"+currentScope);
@@ -151,10 +192,8 @@ public class DecafSymbolsAndScopes extends DecafParserBaseListener {
      */
     public static DecafSymbol.Type getType(int tokenType) {
         switch ( tokenType ) {
-            case DecafParser.INT :  
-                return DecafSymbol.Type.tINT;
-            case DecafParser.VOID :
-               return DecafSymbol.Type.tVOID;
+            case DecafParser.VOID :  return DecafSymbol.Type.tVOID;
+            case DecafParser.INTLITERAL :   return DecafSymbol.Type.tINT;
         }
         return DecafSymbol.Type.tINVALID;
     }
